@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fresco-futasis-pwa-v2';
+const CACHE_NAME = 'fresco-futasis-pwa-v3';
 const urlsToCache = [
     '/',
     '/index-single.html',
@@ -9,7 +9,7 @@ const urlsToCache = [
 ];
 
 // Düzenli aralıklarla yeni içerik kontrolü için değişken
-const CHECK_INTERVAL = 60000; // 60 saniyede bir kontrol et
+const CHECK_INTERVAL = 30000; // 30 saniyede bir kontrol et (daha sık)
 
 // Install a service worker
 self.addEventListener('install', event => {
@@ -29,76 +29,53 @@ self.addEventListener('install', event => {
 
 // Cache and return requests
 self.addEventListener('fetch', event => {
+    // Network-first stratejisi - önce ağdan getir, başarısız olursa cache'den al
     event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                // Cache hit - return response
-                if (response) {
-                    // Ancak aynı zamanda ağdan da kontrol et ve cache'i güncelle (Cache-then-Network stratejisi)
-                    const fetchPromise = fetch(event.request).then(
-                        networkResponse => {
-                            // Geçerli yanıt aldığımızdan emin olun
-                            if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-                                const responseToCache = networkResponse.clone();
-                                caches.open(CACHE_NAME).then(cache => {
-                                    cache.put(event.request, responseToCache);
-                                });
-                                
-                                // İndex sayfası ise ve içerik değiştiyse, istemciye bildir
-                                if (event.request.url.includes('index-single.html') || event.request.url.endsWith('/')) {
-                                    checkForContentUpdate(response, networkResponse);
-                                }
-                            }
-                            return networkResponse;
-                        }
-                    ).catch(error => {
-                        console.log('Fetch başarısız:', error);
-                        return response;
+        fetch(event.request)
+            .then(networkResponse => {
+                // Yanıtı klonla
+                const clonedResponse = networkResponse.clone();
+                
+                // Cache'i güncelle
+                if (networkResponse.status === 200 && networkResponse.type === 'basic') {
+                    caches.open(CACHE_NAME).then(cache => {
+                        cache.put(event.request, clonedResponse);
                     });
                     
-                    // Önce önbellekten cevap ver, ama arka planda güncelleme için fetch et
-                    return response;
-                }
-                
-                // Cache hit yok - ağdan getir
-                return fetch(event.request).then(
-                    response => {
-                        // Geçerli yanıt aldığımızdan emin olun
-                        if (!response || response.status !== 200 || response.type !== 'basic') {
-                            return response;
-                        }
-
-                        // Yanıtı klonla
-                        const responseToCache = response.clone();
-
-                        caches.open(CACHE_NAME)
-                            .then(cache => {
-                                cache.put(event.request, responseToCache);
-                            });
-
-                        return response;
+                    // Ana sayfa veya index sayfasında içerik değişikliği varsa sayfayı yenile
+                    if (event.request.url.includes('index-single.html') || event.request.url.endsWith('/')) {
+                        checkForContentUpdateAndReload(event.request, networkResponse);
                     }
-                );
+                }
+                return networkResponse;
+            })
+            .catch(() => {
+                // Ağ erişimi başarısız olursa cache'den al
+                return caches.match(event.request);
             })
     );
 });
 
-// İçerik güncellemelerini kontrol eden fonksiyon
-function checkForContentUpdate(cachedResponse, networkResponse) {
-    Promise.all([cachedResponse.clone().text(), networkResponse.clone().text()])
-        .then(([cachedText, networkText]) => {
-            if (cachedText !== networkText) {
-                console.log('Yeni içerik tespit edildi! Sayfayı yenileme bildirimi gönderiliyor...');
-                self.clients.matchAll().then(clients => {
-                    clients.forEach(client => {
-                        client.postMessage({
-                            type: 'CONTENT_UPDATED',
-                            message: 'Yeni içerik mevcut. Sayfayı yenilemek için tıklayın.'
+// İçerik güncellemelerini kontrol eden ve sayfayı otomatik yenileyen fonksiyon
+function checkForContentUpdateAndReload(request, networkResponse) {
+    caches.match(request).then(cachedResponse => {
+        if (!cachedResponse) return; // Cache'de yok, karşılaştırma yapılamaz
+        
+        Promise.all([cachedResponse.clone().text(), networkResponse.clone().text()])
+            .then(([cachedText, networkText]) => {
+                if (cachedText !== networkText) {
+                    console.log('Yeni içerik tespit edildi! Sayfayı otomatik yeniliyorum...');
+                    self.clients.matchAll().then(clients => {
+                        clients.forEach(client => {
+                            // Yeni içerik algılanınca sayfayı doğrudan yenile
+                            if (client.url.includes(request.url)) {
+                                client.navigate(client.url);
+                            }
                         });
                     });
-                });
-            }
-        });
+                }
+            });
+    });
 }
 
 // Update a service worker
@@ -123,15 +100,7 @@ self.addEventListener('activate', event => {
     );
 });
 
-// Düzenli aralıklarla yeni içerik kontrolü
-self.addEventListener('message', event => {
-    if (event.data === 'CHECK_UPDATES') {
-        console.log('Güncellemeler kontrol ediliyor...');
-        self.registration.update();
-    }
-});
-
-// Otomatik güncelleme zamanlatıcısı
+// Düzenli aralıklarla güncelleme kontrolü
 setInterval(() => {
     self.registration.update();
     console.log('Otomatik güncelleme kontrolü yapıldı.');

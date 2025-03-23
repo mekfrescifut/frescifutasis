@@ -46,7 +46,7 @@
             line-height: 1.6;
             display: flex;
             flex-direction: column;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%234361ee' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%234361ee' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
         .app {
@@ -353,39 +353,87 @@
             font-size: 1.3rem;
         }
 
-        /* Güncelleme bildirimi için stil */
-        .update-notification {
+        /* Tema değiştirme butonu */
+        .theme-toggle {
             position: fixed;
             top: 20px;
             right: 20px;
             background-color: var(--primary);
             color: var(--white);
-            padding: 10px 15px;
-            border-radius: var(--input-radius);
-            box-shadow: var(--card-shadow);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-20px);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
             cursor: pointer;
+            z-index: 1000;
+            transition: var(--transition);
         }
-        
-        .update-notification.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+
+        .theme-toggle:hover {
+            transform: rotate(30deg);
         }
-        
-        .update-notification i {
-            margin-right: 8px;
-            font-size: 1.1rem;
+
+        .theme-toggle i {
+            font-size: 1.2rem;
+        }
+
+        /* Koyu tema stilleri */
+        body.dark-theme {
+            background-color: #121212;
+            color: #f8f9fa;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        body.dark-theme .login-card {
+            background-color: #1e1e1e;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-theme .login-header h2 {
+            color: var(--primary);
+        }
+
+        body.dark-theme .login-header p,
+        body.dark-theme .form-group label {
+            color: #b0b0b0;
+        }
+
+        body.dark-theme .form-control,
+        body.dark-theme .user-type-option {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            border-color: #3d3d3d;
+        }
+
+        body.dark-theme .form-control:focus {
+            border-color: var(--primary);
+        }
+
+        body.dark-theme .icon-input i,
+        body.dark-theme .password-icon,
+        body.dark-theme .password-toggle {
+            color: #909090;
+        }
+
+        body.dark-theme .icon-input .form-control:focus + i,
+        body.dark-theme .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        body.dark-theme .theme-toggle {
+            background-color: #333;
         }
     </style>
 </head>
 <body>
+    <!-- Tema değiştirme butonu -->
+    <div id="themeToggle" class="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
     <div class="app">
         <main class="login-container">
             <div class="login-card">
@@ -442,12 +490,6 @@
     <!-- Uygulama olarak yükle ikonu -->
     <div id="installApp" class="install-app-button">
         <i class="fas fa-download"></i>
-    </div>
-
-    <!-- Güncelleme bildirimi -->
-    <div id="updateNotification" class="update-notification">
-        <i class="fas fa-sync-alt"></i>
-        <span>Yeni içerik mevcut. Güncellemek için tıklayın.</span>
     </div>
 
     <!-- JavaScript Kodları -->
@@ -514,29 +556,9 @@
                     setInterval(() => {
                         reg.update();
                         console.log('Service worker güncelleme kontrolü yapıldı');
-                    }, 60000); // 60 saniyede bir kontrol et
-                    
-                    // Service worker'a mesaj gönderme
-                    reg.active && reg.active.postMessage('CHECK_UPDATES');
-                    
+                    }, 30000); // 30 saniyede bir kontrol et
                 }).catch(err => {
                     console.log('Service worker kayıt başarısız:', err);
-                });
-                
-                // Service worker'dan gelen mesajları dinleme
-                navigator.serviceWorker.addEventListener('message', event => {
-                    console.log('Service worker mesajı:', event.data);
-                    
-                    if (event.data && event.data.type === 'CONTENT_UPDATED') {
-                        // Güncelleme bildirimini göster
-                        const notification = document.getElementById('updateNotification');
-                        notification.classList.add('show');
-                        
-                        // Bildirime tıklama işlemi
-                        notification.addEventListener('click', () => {
-                            window.location.reload();
-                        });
-                    }
                 });
             });
         }
@@ -629,6 +651,30 @@
                 } else {
                     passwordField.type = 'password';
                     toggleIcon.className = 'fas fa-eye';
+                }
+            });
+
+            // Tema değiştirme fonksiyonu
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // Kayıtlı tema tercihi kontrolü
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeIcon.className = 'fas fa-sun';
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-theme');
+                
+                // İkon değişimi
+                if (document.body.classList.contains('dark-theme')) {
+                    themeIcon.className = 'fas fa-sun';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    themeIcon.className = 'fas fa-moon';
+                    localStorage.setItem('theme', 'light');
                 }
             });
         });
