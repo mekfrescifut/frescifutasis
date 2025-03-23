@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4361ee">
+    <title>Fresco Futasis - Giriş</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- CSS Kodları -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --primary-gradient: linear-gradient(135deg, #4361ee, #3f37c9);
+            --secondary: #4cc9f0;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --white: #ffffff;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --input-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            --border-radius: 12px;
+            --input-radius: 8px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        html, body {
+            height: 100%;
+            overflow: auto;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%234361ee' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .app {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+        }
+
+        .login-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .login-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 380px;
+            padding: 25px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--primary-gradient);
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-header h2 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .login-header p {
+            color: #6c757d;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 0.95rem;
+            border: 2px solid #e9ecef;
+            border-radius: var(--input-radius);
+            background-color: var(--white);
+            transition: var(--transition);
+            box-shadow: var(--input-shadow);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+        }
+
+        .icon-input {
+            position: relative;
+        }
+
+        .icon-input .form-control {
+            padding-left: 38px;
+        }
+
+        .icon-input i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .icon-input .form-control:focus + i {
+            color: var(--primary);
+        }
+
+        /* Parola göz ikonu için özel stil */
+        .password-field {
+            position: relative;
+        }
+        
+        .password-field .form-control {
+            padding-right: 40px;
+            padding-left: 38px;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #adb5bd;
+            font-size: 1.1rem;
+            cursor: pointer;
+            z-index: 10;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+        }
+        
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+        
+        .password-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+            font-size: 1rem;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 0.95rem;
+            border: 2px solid #e9ecef;
+            border-radius: var(--input-radius);
+            background-color: var(--white);
+            transition: var(--transition);
+            box-shadow: var(--input-shadow);
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23adb5bd' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 38px;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--input-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        }
+
+        .btn-primary:hover::after {
+            left: 100%;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Kullanıcı tipi seçim stilleri */
+        .user-type-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 5px;
+            width: 100%;
+        }
+
+        .user-type-option {
+            flex: 1;
+            border: 2px solid #e9ecef;
+            background: var(--white);
+            border-radius: var(--input-radius);
+            padding: 10px 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #6c757d;
+            box-shadow: var(--input-shadow);
+        }
+
+        .user-type-option:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .user-type-option.active {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.25);
+        }
+
+        .user-type-option i {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive tasarım */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 20px 15px;
+            }
+            
+            .login-header h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <main class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <h2>Giriş Yap</h2>
+                    <p>Lütfen hesabınıza giriş yapın</p>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="userType">Kullanıcı Tipi</label>
+                        <div class="user-type-options">
+                            <div class="user-type-option" data-value="student">
+                                <i class="fas fa-user-graduate"></i>
+                                Öğrenci
+                            </div>
+                            <div class="user-type-option" data-value="teacher">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                Öğretmen
+                            </div>
+                            <div class="user-type-option" data-value="admin">
+                                <i class="fas fa-user-shield"></i>
+                                Yönetici
+                            </div>
+                        </div>
+                        <input type="hidden" id="userType" name="userType" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="username">Kullanıcı Adı</label>
+                        <div class="icon-input">
+                            <input type="text" id="username" class="form-control" placeholder="Kullanıcı adınızı girin" required>
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Parola</label>
+                        <div class="password-field">
+                            <input type="password" id="password" class="form-control" placeholder="Parolanızı girin" required>
+                            <i class="fas fa-lock password-icon"></i>
+                            <button type="button" id="togglePassword" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    
+    <!-- JavaScript Kodları -->
+    <script>
+        // Register service worker for PWA - Geliştirme sırasında devre dışı bırakıldı
+        /*
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+        */
+
+        // Service worker'ı kaldır
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                    console.log('ServiceWorker kaldırıldı');
+                }
+            });
+            caches.keys().then(function(cacheNames) {
+                return Promise.all(
+                    cacheNames.map(function(cacheName) {
+                        return caches.delete(cacheName);
+                    })
+                );
+            }).then(function() {
+                console.log('Önbellek temizlendi');
+            });
+        }
+
+        // Disable cache for development - fix for refresh issues
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            const meta = document.createElement('meta');
+            meta.httpEquiv = 'Cache-Control';
+            meta.content = 'no-cache, no-store, must-revalidate';
+            document.head.appendChild(meta);
+            
+            const pragma = document.createElement('meta');
+            pragma.httpEquiv = 'Pragma';
+            pragma.content = 'no-cache';
+            document.head.appendChild(pragma);
+            
+            const expires = document.createElement('meta');
+            expires.httpEquiv = 'Expires';
+            expires.content = '0';
+            document.head.appendChild(expires);
+        }
+
+        // PWA installation prompt
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
+            e.preventDefault();
+            // Stash the event so it can be triggered later
+            deferredPrompt = e;
+        });
+
+        // Login form handling
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userType = document.getElementById('userType').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            console.log('Giriş Bilgileri:', {
+                kullanıcı_tipi: userType,
+                kullanıcı_adı: username,
+                parola: password
+            });
+            
+            // Burada gerçek bir kimlik doğrulama yapabilirsiniz
+            // Örnek olarak başarılı giriş mesajı gösteriyoruz
+            alert('Giriş başarılı! Hoş geldiniz, ' + username);
+        });
+
+        // User type selection
+        document.addEventListener('DOMContentLoaded', function() {
+            const userTypeOptions = document.querySelectorAll('.user-type-option');
+            const userTypeInput = document.getElementById('userType');
+            
+            userTypeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    userTypeOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Set the hidden input value
+                    userTypeInput.value = this.getAttribute('data-value');
+                });
+            });
+        });
+
+        // Password visibility toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordField = document.getElementById('password');
+            const togglePassword = document.getElementById('togglePassword');
+            const toggleIcon = togglePassword.querySelector('i');
+            
+            togglePassword.addEventListener('click', function(e) {
+                // Prevent form submission
+                e.preventDefault();
+                
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    toggleIcon.className = 'fas fa-eye-slash';
+                } else {
+                    passwordField.type = 'password';
+                    toggleIcon.className = 'fas fa-eye';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
