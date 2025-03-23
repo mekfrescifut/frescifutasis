@@ -352,6 +352,37 @@
         .install-app-button i {
             font-size: 1.3rem;
         }
+
+        /* Güncelleme bildirimi için stil */
+        .update-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 10px 15px;
+            border-radius: var(--input-radius);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-20px);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+        }
+        
+        .update-notification.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .update-notification i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 <body>
@@ -413,6 +444,12 @@
         <i class="fas fa-download"></i>
     </div>
 
+    <!-- Güncelleme bildirimi -->
+    <div id="updateNotification" class="update-notification">
+        <i class="fas fa-sync-alt"></i>
+        <span>Yeni içerik mevcut. Güncellemek için tıklayın.</span>
+    </div>
+
     <!-- JavaScript Kodları -->
     <script>
         // Register service worker for PWA - Geliştirme sırasında devre dışı bırakıldı
@@ -472,8 +509,34 @@
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('service-worker.js').then(reg => {
                     console.log('Service worker kayıt başarılı:', reg);
+                    
+                    // Service worker güncelleme kontrol etme
+                    setInterval(() => {
+                        reg.update();
+                        console.log('Service worker güncelleme kontrolü yapıldı');
+                    }, 60000); // 60 saniyede bir kontrol et
+                    
+                    // Service worker'a mesaj gönderme
+                    reg.active && reg.active.postMessage('CHECK_UPDATES');
+                    
                 }).catch(err => {
                     console.log('Service worker kayıt başarısız:', err);
+                });
+                
+                // Service worker'dan gelen mesajları dinleme
+                navigator.serviceWorker.addEventListener('message', event => {
+                    console.log('Service worker mesajı:', event.data);
+                    
+                    if (event.data && event.data.type === 'CONTENT_UPDATED') {
+                        // Güncelleme bildirimini göster
+                        const notification = document.getElementById('updateNotification');
+                        notification.classList.add('show');
+                        
+                        // Bildirime tıklama işlemi
+                        notification.addEventListener('click', () => {
+                            window.location.reload();
+                        });
+                    }
                 });
             });
         }
